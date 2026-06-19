@@ -790,7 +790,8 @@ body.night-mode .toggle-icon {
   border-radius: var(--border-radius-lg);
   border: 3px dashed var(--accent-light);
   box-shadow: var(--card-shadow);
-  height: calc(100% - 70px);
+  height: 420px; /* Prevent collapse by using a fixed safe height */
+  min-height: 350px;
   position: relative;
   overflow: hidden;
 }
