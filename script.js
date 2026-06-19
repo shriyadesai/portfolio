@@ -8,7 +8,7 @@ const cursorTrail = document.getElementById('custom-cursor-trail');
 let mouseX = 0, mouseY = 0; // Actual mouse position
 let trailX = 0, trailY = 0;   // Trail position (lagging behind)
 
-const lerpFactor = 0.15; // Smooth delay index
+const lerpFactor = 0.15;
 
 window.addEventListener('mousemove', (e) => {
   mouseX = e.clientX;
@@ -77,10 +77,32 @@ const timelineProgress = document.getElementById('timeline-progress');
 
 let currentSlideIndex = 0;
 
+// Translate Scroll Wheel (Vertical to Horizontal, unless active slide has vertical scroll)
 scrollContainer.addEventListener('wheel', (e) => {
+  const activeSlide = slides[currentSlideIndex];
+  if (activeSlide) {
+    const hasVerticalOverflow = activeSlide.scrollHeight > activeSlide.clientHeight;
+    
+    if (hasVerticalOverflow) {
+      const isScrollEnd = activeSlide.scrollTop + activeSlide.clientHeight >= activeSlide.scrollHeight - 8;
+      const isScrollTop = activeSlide.scrollTop <= 5;
+      
+      // If scrolling down and we haven't reached the bottom of the slide:
+      // Let the user scroll vertically within this slide.
+      if (e.deltaY > 0 && !isScrollEnd) {
+        return;
+      }
+      // If scrolling up and we haven't reached the top of the slide:
+      // Let the user scroll vertically within this slide.
+      if (e.deltaY < 0 && !isScrollTop) {
+        return;
+      }
+    }
+  }
+
   e.preventDefault();
-  scrollContainer.scrollLeft += e.deltaY * 0.85;
-});
+  scrollContainer.scrollLeft += (e.deltaY + e.deltaX) * 0.85;
+}, { passive: false });
 
 scrollContainer.addEventListener('scroll', () => {
   const scrollWidth = scrollContainer.scrollWidth - scrollContainer.clientWidth;
@@ -150,7 +172,6 @@ document.querySelectorAll('.scroll-to-slide').forEach(btn => {
   });
 });
 
-// Drag swiping for container
 let isDown = false;
 let startX;
 let scrollLeft;
