@@ -5,15 +5,14 @@
 const cursor = document.getElementById('custom-cursor');
 const cursorTrail = document.getElementById('custom-cursor-trail');
 
-let mouseX = 0, mouseY = 0; // Actual mouse position
-let trailX = 0, trailY = 0;   // Trail position (lagging behind)
+let mouseX = 0, mouseY = 0;
+let trailX = 0, trailY = 0;
 
 const lerpFactor = 0.15;
 
 window.addEventListener('mousemove', (e) => {
   mouseX = e.clientX;
   mouseY = e.clientY;
-  
   cursor.style.left = `${mouseX}px`;
   cursor.style.top = `${mouseY}px`;
 });
@@ -21,10 +20,8 @@ window.addEventListener('mousemove', (e) => {
 function animateTrail() {
   trailX += (mouseX - trailX) * lerpFactor;
   trailY += (mouseY - trailY) * lerpFactor;
-  
   cursorTrail.style.left = `${trailX}px`;
   cursorTrail.style.top = `${trailY}px`;
-  
   requestAnimationFrame(animateTrail);
 }
 animateTrail();
@@ -77,7 +74,6 @@ const timelineProgress = document.getElementById('timeline-progress');
 
 let currentSlideIndex = 0;
 
-// Translate Scroll Wheel (Vertical to Horizontal, unless active slide has vertical scroll)
 scrollContainer.addEventListener('wheel', (e) => {
   const activeSlide = slides[currentSlideIndex];
   if (activeSlide) {
@@ -87,16 +83,8 @@ scrollContainer.addEventListener('wheel', (e) => {
       const isScrollEnd = activeSlide.scrollTop + activeSlide.clientHeight >= activeSlide.scrollHeight - 8;
       const isScrollTop = activeSlide.scrollTop <= 5;
       
-      // If scrolling down and we haven't reached the bottom of the slide:
-      // Let the user scroll vertically within this slide.
-      if (e.deltaY > 0 && !isScrollEnd) {
-        return;
-      }
-      // If scrolling up and we haven't reached the top of the slide:
-      // Let the user scroll vertically within this slide.
-      if (e.deltaY < 0 && !isScrollTop) {
-        return;
-      }
+      if (e.deltaY > 0 && !isScrollEnd) return;
+      if (e.deltaY < 0 && !isScrollTop) return;
     }
   }
 
@@ -111,8 +99,9 @@ scrollContainer.addEventListener('scroll', () => {
   const progressPercent = scrollWidth > 0 ? (currentScroll / scrollWidth) * 100 : 0;
   timelineProgress.style.width = `${progressPercent}%`;
   
+  let activeIndex = 0;
   const widthOfSlide = window.innerWidth;
-  const activeIndex = Math.round(currentScroll / widthOfSlide);
+  activeIndex = Math.round(currentScroll / widthOfSlide);
   
   if (activeIndex !== currentSlideIndex && activeIndex >= 0 && activeIndex < slides.length) {
     currentSlideIndex = activeIndex;
@@ -138,15 +127,11 @@ timelineNodes.forEach((node) => {
 });
 
 document.getElementById('slide-prev').addEventListener('click', () => {
-  if (currentSlideIndex > 0) {
-    scrollToSlideIndex(currentSlideIndex - 1);
-  }
+  if (currentSlideIndex > 0) scrollToSlideIndex(currentSlideIndex - 1);
 });
 
 document.getElementById('slide-next').addEventListener('click', () => {
-  if (currentSlideIndex < slides.length - 1) {
-    scrollToSlideIndex(currentSlideIndex + 1);
-  }
+  if (currentSlideIndex < slides.length - 1) scrollToSlideIndex(currentSlideIndex + 1);
 });
 
 function scrollToSlideIndex(index) {
@@ -165,38 +150,31 @@ document.querySelectorAll('.scroll-to-slide').forEach(btn => {
     const targetSlide = document.getElementById(targetId);
     if (targetSlide) {
       const index = Array.from(slides).indexOf(targetSlide);
-      if (index !== -1) {
-        scrollToSlideIndex(index);
-      }
+      if (index !== -1) scrollToSlideIndex(index);
     }
   });
 });
 
 let isDown = false;
 let startX;
-let scrollLeft;
+let scrollLeftPos;
 
 scrollContainer.addEventListener('mousedown', (e) => {
   if (e.target.closest('button, a, .exp-card, .project-card, .skill-bubble, .faq-question')) return;
   isDown = true;
   startX = e.pageX - scrollContainer.offsetLeft;
-  scrollLeft = scrollContainer.scrollLeft;
+  scrollLeftPos = scrollContainer.scrollLeft;
 });
 
-scrollContainer.addEventListener('mouseleave', () => {
-  isDown = false;
-});
-
-scrollContainer.addEventListener('mouseup', () => {
-  isDown = false;
-});
+scrollContainer.addEventListener('mouseleave', () => { isDown = false; });
+scrollContainer.addEventListener('mouseup', () => { isDown = false; });
 
 scrollContainer.addEventListener('mousemove', (e) => {
   if (!isDown) return;
   e.preventDefault();
   const x = e.pageX - scrollContainer.offsetLeft;
   const walk = (x - startX) * 1.5;
-  scrollContainer.scrollLeft = scrollLeft - walk;
+  scrollContainer.scrollLeft = scrollLeftPos - walk;
 });
 
 
@@ -232,7 +210,7 @@ function type() {
 
   if (!isDeleting && charIndex === currentPhrase.length) {
     isDeleting = true;
-    typeSpeed = 2000; 
+    typeSpeed = 2000;
   } else if (isDeleting && charIndex === 0) {
     isDeleting = false;
     phraseIndex = (phraseIndex + 1) % phrases.length;
@@ -248,7 +226,7 @@ window.addEventListener('load', () => {
 
 
 // ==========================================================================
-// Mode Switcher (Day/Night Theme Toggles)
+// Mode Switcher (Day: PMM/GTM vs Night: AI/Builder)
 // ==========================================================================
 
 const modeToggle = document.getElementById('mode-toggle');
@@ -260,17 +238,13 @@ modeToggle.addEventListener('click', () => {
   if (document.body.classList.contains('day-mode')) {
     document.body.classList.remove('day-mode');
     document.body.classList.add('night-mode');
-    
     toggleIcon.textContent = "🌙";
     toggleLabel.textContent = "Night Mode";
-    heroIllustration.innerHTML = '<div class="illustration-face">🤖</div>';
   } else {
     document.body.classList.remove('night-mode');
     document.body.classList.add('day-mode');
-    
     toggleIcon.textContent = "☀️";
     toggleLabel.textContent = "Day Mode";
-    heroIllustration.innerHTML = '<div class="illustration-face">😊</div>';
   }
 });
 
@@ -412,15 +386,13 @@ window.closeModals = function() {
 
 document.querySelectorAll('.modal-backdrop').forEach(backdrop => {
   backdrop.addEventListener('click', (e) => {
-    if (e.target === backdrop) {
-      closeModals();
-    }
+    if (e.target === backdrop) closeModals();
   });
 });
 
 
 // ==========================================================================
-// Interactive Skills Bubble Playground (Physics + Dynamic Bounds)
+// Interactive Skills Bubble Playground (Draggable + Collisions Physics)
 // ==========================================================================
 
 const sandbox = document.getElementById('playground-sandbox');
@@ -435,29 +407,43 @@ let dragOffsetY = 0;
 
 const speedLimit = 1.5;
 const friction = 0.99;
-const floatDrift = 0.05;
+const floatDrift = 0.04;
 
 function initPhysics() {
   const rect = sandbox.getBoundingClientRect();
   const w = rect.width > 200 ? rect.width : 900;
-  const h = rect.height > 100 ? rect.height : 450;
+  const h = rect.height > 100 ? rect.height : 340;
+  
+  const count = bubbles.length;
+  const cols = Math.ceil(Math.sqrt(count * (w / h)));
+  const rows = Math.ceil(count / cols);
+  const cellW = w / cols;
+  const cellH = h / rows;
   
   bubbles.forEach((el, index) => {
     const width = el.offsetWidth || 120;
-    const height = el.offsetHeight || 50;
+    const height = el.offsetHeight || 45;
     
-    const x = Math.random() * (w - width - 40) + 20;
-    const y = Math.random() * (h - height - 40) + 20;
+    const col = index % cols;
+    const row = Math.floor(index / cols);
     
-    const vx = (Math.random() - 0.5) * 1.2;
-    const vy = (Math.random() - 0.5) * 1.2;
+    const jitterX = (Math.random() - 0.5) * (cellW * 0.25);
+    const jitterY = (Math.random() - 0.5) * (cellH * 0.25);
+    let x = col * cellW + (cellW - width) / 2 + jitterX;
+    let y = row * cellH + (cellH - height) / 2 + jitterY;
+    
+    x = Math.max(8, Math.min(w - width - 8, x));
+    y = Math.max(8, Math.min(h - height - 8, y));
+    
+    const vx = (Math.random() - 0.5) * 0.8;
+    const vy = (Math.random() - 0.5) * 0.8;
     
     bubbleData.push({
       el: el,
       index: index,
       width: width,
       height: height,
-      radius: width / 2,
+      radius: Math.max(width, height) / 2,
       x: x,
       y: y,
       vx: vx,
@@ -486,7 +472,7 @@ function initPhysics() {
 function updatePhysics() {
   const rect = sandbox.getBoundingClientRect();
   const w = rect.width > 200 ? rect.width : 900;
-  const h = rect.height > 100 ? rect.height : 450;
+  const h = rect.height > 100 ? rect.height : 340;
 
   if (activeDragBubble && activeDragBubble.isDragged) {
     const sandboxRect = sandbox.getBoundingClientRect();
@@ -507,21 +493,11 @@ function updatePhysics() {
     const b1 = bubbleData[i];
     if (b1.isDragged) continue;
 
-    if (b1.x <= 0) {
-      b1.x = 0;
-      b1.vx = Math.abs(b1.vx);
-    } else if (b1.x + b1.width >= w) {
-      b1.x = w - b1.width;
-      b1.vx = -Math.abs(b1.vx);
-    }
+    if (b1.x <= 0) { b1.x = 0; b1.vx = Math.abs(b1.vx); }
+    else if (b1.x + b1.width >= w) { b1.x = w - b1.width; b1.vx = -Math.abs(b1.vx); }
 
-    if (b1.y <= 0) {
-      b1.y = 0;
-      b1.vy = Math.abs(b1.vy);
-    } else if (b1.y + b1.height >= h) {
-      b1.y = h - b1.height;
-      b1.vy = -Math.abs(b1.vy);
-    }
+    if (b1.y <= 0) { b1.y = 0; b1.vy = Math.abs(b1.vy); }
+    else if (b1.y + b1.height >= h) { b1.y = h - b1.height; b1.vy = -Math.abs(b1.vy); }
 
     for (let j = i + 1; j < bubbleData.length; j++) {
       const b2 = bubbleData[j];
@@ -534,7 +510,6 @@ function updatePhysics() {
       const dx = c2x - c1x;
       const dy = c2y - c1y;
       const dist = Math.sqrt(dx * dx + dy * dy);
-      
       const minDist = b1.radius + b2.radius;
       
       if (dist < minDist && dist > 0) {
@@ -542,27 +517,15 @@ function updatePhysics() {
         const nx = dx / dist;
         const ny = dy / dist;
         
-        if (!b1.isDragged) {
-          b1.x -= nx * overlap * 0.5;
-          b1.y -= ny * overlap * 0.5;
-        }
-        if (!b2.isDragged) {
-          b2.x += nx * overlap * 0.5;
-          b2.y += ny * overlap * 0.5;
-        }
+        if (!b1.isDragged) { b1.x -= nx * overlap * 0.5; b1.y -= ny * overlap * 0.5; }
+        if (!b2.isDragged) { b2.x += nx * overlap * 0.5; b2.y += ny * overlap * 0.5; }
         
         const kx = b1.vx - b2.vx;
         const ky = b1.vy - b2.vy;
         const p = 2 * (nx * kx + ny * ky) / 2;
         
-        if (!b1.isDragged) {
-          b1.vx -= p * nx;
-          b1.vy -= p * ny;
-        }
-        if (!b2.isDragged) {
-          b2.vx += p * nx;
-          b2.vy += p * ny;
-        }
+        if (!b1.isDragged) { b1.vx -= p * nx; b1.vy -= p * ny; }
+        if (!b2.isDragged) { b2.vx += p * nx; b2.vy += p * ny; }
       }
     }
 
@@ -596,7 +559,7 @@ window.addEventListener('mouseup', () => {
 setTimeout(() => {
   initPhysics();
   updatePhysics();
-}, 300);
+}, 400);
 
 legendTags.forEach(tag => {
   tag.addEventListener('click', () => {
