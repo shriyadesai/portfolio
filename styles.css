@@ -48,13 +48,25 @@ body.night-mode {
   -moz-osx-font-smoothing: grayscale;
 }
 
+html, body {
+  overflow: hidden !important;
+  width: 100vw;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+html::-webkit-scrollbar, body::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
 body {
   font-family: var(--font-body);
   background-color: var(--bg-primary);
   color: var(--text-primary);
-  overflow: hidden; /* Prevent default vertical scrolling */
-  height: 100vh;
-  width: 100vw;
   transition: background-color 0.8s ease, color 0.5s ease;
   user-select: none;
 }
@@ -208,14 +220,17 @@ body.night-mode .toggle-icon {
 .horizontal-scroll-container {
   width: 100vw;
   height: 100vh;
-  overflow-x: auto;
+  overflow-x: scroll;
   overflow-y: hidden;
   position: relative;
+  -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Hide default scrollbar Firefox */
 }
 
 .horizontal-scroll-container::-webkit-scrollbar {
-  display: none; /* Hide default scrollbar Chrome/Safari */
+  display: none !important; /* Hide default scrollbar Chrome/Safari */
+  width: 0 !important;
+  height: 0 !important;
 }
 
 .scroll-wrapper {
@@ -232,7 +247,7 @@ body.night-mode .toggle-icon {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 100px 80px 100px 80px;
+  padding: 100px 80px 130px 80px; /* Safe padding for header and footer */
   box-sizing: border-box;
   overflow: hidden;
   position: relative;
@@ -245,6 +260,7 @@ body.night-mode .toggle-icon {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  gap: 25px; /* Equal spacing between header and items */
   white-space: normal; /* Override wrap behavior */
 }
 
@@ -549,20 +565,23 @@ body.night-mode .toggle-icon {
 .experience-corridor {
   display: flex;
   gap: 30px;
-  height: 70%;
-  align-items: center;
+  flex: 1;
+  min-height: 0;
+  align-items: stretch;
 }
 
 .exp-card {
   flex: 1;
   background: white;
   border-radius: var(--border-radius-lg);
-  padding: 40px;
+  padding: 30px;
   box-shadow: var(--card-shadow);
   border: 3px solid transparent;
   display: flex;
   flex-direction: column;
-  height: 380px;
+  height: auto;
+  min-height: 250px;
+  max-height: 350px;
   position: relative;
   transition: var(--transition-smooth);
 }
@@ -660,19 +679,22 @@ body.night-mode .toggle-icon {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 30px;
-  height: 70%;
-  align-items: center;
+  flex: 1;
+  min-height: 0;
+  align-items: stretch;
 }
 
 .project-card {
   background: white;
   border-radius: var(--border-radius-lg);
-  padding: 35px;
+  padding: 30px;
   box-shadow: var(--card-shadow);
   border: 3px solid transparent;
   display: flex;
   flex-direction: column;
-  height: 380px;
+  height: auto;
+  min-height: 250px;
+  max-height: 350px;
   transition: var(--transition-smooth);
 }
 
@@ -763,7 +785,7 @@ body.night-mode .toggle-icon {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  height: 70%;
+  min-height: 0;
 }
 
 .playground-sandbox {
@@ -891,7 +913,8 @@ body.night-mode .toggle-icon {
   display: grid;
   grid-template-columns: 1.3fr 1.7fr;
   gap: 40px;
-  height: 70%;
+  flex: 1;
+  min-height: 0;
   align-items: stretch;
 }
 
@@ -899,16 +922,19 @@ body.night-mode .toggle-icon {
 .faq-container, .connect-container {
   background: white;
   border-radius: var(--border-radius-lg);
-  padding: 40px;
+  padding: 30px;
   box-shadow: var(--card-shadow);
   border: 2px solid rgba(0,0,0,0.01);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
 }
 
 .faq-container h3, .connect-container h3 {
   font-family: var(--font-header);
   font-size: 1.7rem;
   color: var(--accent-primary);
-  margin-bottom: 25px;
+  margin-bottom: 15px;
 }
 
 .faq-accordion {
