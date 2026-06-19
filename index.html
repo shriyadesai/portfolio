@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shriya V Desai | PMM & AI Product Builder Portfolio</title>
+  <meta name="description" content="Portfolio of Shriya V Desai - Product Marketing Manager and AI Product Builder. Master of Engineering Management student at Dartmouth College.">
+  
+  <!-- Playful & Clean Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;600;700&family=Fredoka:wght@400;500;600;700&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="light-theme day-mode">
+
+  <!-- Custom Cursor Elements -->
+  <div class="custom-cursor" id="custom-cursor"></div>
+  <div class="custom-cursor-trail" id="custom-cursor-trail"></div>
+
+  <!-- Header / Navigation Panel -->
+  <header class="app-header">
+    <div class="logo">
+      <span class="logo-emoji">✨</span>
+      <span class="logo-text bouncy-letters" id="logo-text">Shriya.</span>
+    </div>
+    
+    <div class="header-controls">
+      <!-- Mode Toggle Switch (Day = PMM/GTM, Night = AI/Builder) -->
+      <button class="toggle-mode-btn" id="mode-toggle" aria-label="Toggle between PMM Day and AI Night modes">
+        <span class="toggle-icon" id="toggle-icon">☀️</span>
+        <span class="toggle-label" id="toggle-label">Day Mode</span>
+      </button>
+      
+      <button class="print-resume-btn" onclick="window.print()" aria-label="Print resume">
+        📄 Print Resume
+      </button>
+    </div>
+  </header>
+
+  <!-- Horizontal Scroll Container -->
+  <main class="horizontal-scroll-container" id="scroll-container">
+    <div class="scroll-wrapper" id="scroll-wrapper">
+      
+      <!-- Slide 1: Welcome Hero -->
+      <section class="slide hero-slide" id="slide-welcome">
+        <div class="slide-content">
+          <span class="badge badge-hero">Welcome to my universe! 👋</span>
+          <h1 class="hero-title">
+            Hi, I'm <span class="highlight bouncy-text" id="bouncy-name">Shriya V Desai</span>
+          </h1>
+          <h2 class="hero-subtitle">
+            I am <span class="typewriter" id="typewriter-text"></span><span class="cursor-blink">|</span>
+          </h2>
+          <p class="hero-desc">
+            Product Marketing Manager Intern at <strong>Applied Materials</strong> &amp; Master's student at <strong>Dartmouth College</strong>. I bridge the gap between business growth strategies and deep tech AI prototyping.
+          </p>
+          
+          <div class="hero-actions">
+            <button class="btn btn-primary scroll-to-slide" data-target="slide-about">Explore Story 🚀</button>
+            <button class="btn btn-secondary scroll-to-slide" data-target="slide-skills">Interactive Playground 🎨</button>
+          </div>
+        </div>
+        <div class="hero-graphic-container">
+          <div class="floating-circle circle-1"></div>
+          <div class="floating-circle circle-2"></div>
+          <div class="floating-circle circle-3"></div>
+          <div class="hero-illustration" id="hero-illustration">
+            <div class="illustration-face">😊</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Slide 2: About Me & Education -->
+      <section class="slide about-slide" id="slide-about">
+        <div class="slide-content">
+          <div class="section-header">
+            <span class="section-emoji">🎒</span>
+            <h2 class="section-title">My Journey &amp; Education</h2>
+          </div>
+          
+          <div class="about-grid">
+            <div class="about-card intro-card">
+              <h3>Who I Am</h3>
+              <p>
+                I'm a builder at heart. I own the end-to-end lifecycle of AI-driven products, from customer discovery (I've done <strong>1,000+</strong> interviews!) through pricing, messaging, and market positioning. 
+              </p>
+              <p>
+                By mixing electrical engineering with business analytics, I craft product-market fit that is technically sound and commercially viable.
+              </p>
+            </div>
+            
+            <div class="about-card education-card">
+              <h3>Education</h3>
+              <div class="edu-item">
+                <div class="edu-header">
+                  <h4>Dartmouth College</h4>
+                  <span class="edu-date">Sep 2025 – Dec 2026</span>
+                </div>
+                <p class="edu-degree">Master of Engineering Management (Product Management Track)</p>
+                <p class="edu-details">
+                  <strong>Coursework:</strong> Data Analytics, Marketing, NLP Applications, Strategy in Emerging Markets, Accounting &amp; Finance.<br>
+                  <strong>Role:</strong> Teaching Assistant for <em>Technical Project Management</em> and <em>Design &amp; Entrepreneurship</em>.
+                </p>
+              </div>
+              
+              <div class="edu-divider"></div>
+              
+              <div class="edu-item">
+                <div class="edu-header">
+                  <h4>PES University</h4>
+                  <span class="edu-date">Dec 2020 – Aug 2024</span>
+                </div>
+                <p class="edu-degree">B.Tech in Electrical &amp; Electronics Engineering</p>
+                <p class="edu-details">
+                  <strong>Coursework:</strong> Machine Learning, Soft Computing, Engineering Management, Entrepreneurship.<br>
+                  <strong>Role:</strong> Teaching Assistant at the <em>Center for Innovation and Entrepreneurship</em>.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Slide 3: Experience Corridor -->
+      <section class="slide experience-slide" id="slide-experience">
+        <div class="slide-content">
+          <div class="section-header">
+            <span class="section-emoji">💼</span>
+            <h2 class="section-title">Professional Experience</h2>
+            <p class="section-subtitle">(Click on any card to see full achievements!)</p>
+          </div>
+          
+          <div class="experience-corridor">
+            <!-- Card 1 -->
+            <div class="exp-card hover-glow" onclick="openExpModal('applied')">
+              <div class="exp-badge">Current</div>
+              <div class="exp-header">
+                <h3>Applied Materials</h3>
+                <span class="exp-location">Gloucester, MA</span>
+              </div>
+              <h4 class="exp-role">Product Marketing Manager Intern</h4>
+              <p class="exp-summary">Leading go-to-market and sales-enablement systems for the VSE Business Unit's Smart NSO (NSO 360).</p>
+              <div class="exp-stats">
+                <div class="stat-bubble">GTM Rollout</div>
+                <div class="stat-bubble">Opportunity Intell.</div>
+              </div>
+              <span class="click-more">Read details ➜</span>
+            </div>
+
+            <!-- Card 2 -->
+            <div class="exp-card hover-glow" onclick="openExpModal('deloitte')">
+              <div class="exp-badge">2024 - 2025</div>
+              <div class="exp-header">
+                <h3>Deloitte USI Consulting</h3>
+                <span class="exp-location">Bengaluru, India</span>
+              </div>
+              <h4 class="exp-role">Customer &amp; Marketing Analyst</h4>
+              <p class="exp-summary">Delivered system roadmaps for $800M healthcare client across 40+ Jira epics and Salesforce pipelines.</p>
+              <div class="exp-stats">
+                <div class="stat-bubble">-20% Defect Rate</div>
+                <div class="stat-bubble">SPOT Award</div>
+              </div>
+              <span class="click-more">Read details ➜</span>
+            </div>
+
+            <!-- Card 3 -->
+            <div class="exp-card hover-glow" onclick="openExpModal('stride')">
+              <div class="exp-badge">Co-Founder</div>
+              <div class="exp-header">
+                <h3>Stride AI</h3>
+                <span class="exp-location">Bengaluru, India</span>
+              </div>
+              <h4 class="exp-role">Product Manager &amp; Co-Founder</h4>
+              <p class="exp-summary">Built and led product for AI-powered talent intelligence and matching algorithms platform.</p>
+              <div class="exp-stats">
+                <div class="stat-bubble">1,000+ Interviews</div>
+                <div class="stat-bubble">Top 30 Nationally</div>
+              </div>
+              <span class="click-more">Read details ➜</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Slide 4: Key Projects -->
+      <section class="slide projects-slide" id="slide-projects">
+        <div class="slide-content">
+          <div class="section-header">
+            <span class="section-emoji">🛠️</span>
+            <h2 class="section-title">Selected Projects</h2>
+            <p class="section-subtitle">Click to view process and impact metrics</p>
+          </div>
+          
+          <div class="projects-grid">
+            <!-- Project 1 -->
+            <div class="project-card" onclick="openProjectModal('sap')">
+              <div class="project-card-header text-sap">SAP Experience Garage</div>
+              <h3>AI Prototyping Lab</h3>
+              <p class="project-desc">Led product design of a weighted LLM evaluation layer routing engine for a 50,000-member community.</p>
+              <div class="project-tags">
+                <span>AI PM</span>
+                <span>LLM Eval</span>
+                <span>Python</span>
+              </div>
+              <div class="project-footer">
+                <span class="project-metric">24 AI Tools Benchmarked</span>
+                <span class="read-btn">View Case Study ➜</span>
+              </div>
+            </div>
+
+            <!-- Project 2 -->
+            <div class="project-card" onclick="openProjectModal('emrld')">
+              <div class="project-card-header text-emrld">EMRLD Platform</div>
+              <h3>AI Medical Education</h3>
+              <p class="project-desc">Crafted GTM positioning frameworks and PRDs for a cost-saving medical education platform.</p>
+              <div class="project-tags">
+                <span>PRDs</span>
+                <span>Strategy</span>
+                <span>Vendor Evaluation</span>
+              </div>
+              <div class="project-footer">
+                <span class="project-metric">-66% Development Cost</span>
+                <span class="read-btn">View Case Study ➜</span>
+              </div>
+            </div>
+
+            <!-- Project 3 -->
+            <div class="project-card" onclick="openProjectModal('syllabit')">
+              <div class="project-card-header text-syllabit">SyllaBit</div>
+              <h3>Personalized ADHD Tool</h3>
+              <p class="project-desc">Built a syllabus-to-action learning tool for neurodiverse students, winning first place at JHU.</p>
+              <div class="project-tags">
+                <span>AI EdTech</span>
+                <span>Hackathon</span>
+                <span>User Research</span>
+              </div>
+              <div class="project-footer">
+                <span class="project-metric">🥇 1st Place JHU Hackathon</span>
+                <span class="read-btn">View Case Study ➜</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Slide 5: Interactive Skills Playground -->
+      <section class="slide skills-slide" id="slide-skills">
+        <div class="slide-content">
+          <div class="section-header">
+            <span class="section-emoji">🎨</span>
+            <h2 class="section-title">Creative Skills Playground</h2>
+            <p class="section-subtitle">Toss, drag, or tap the bubbles to explore my toolkits! They bounce dynamically.</p>
+          </div>
+          
+          <div class="skills-playground-wrapper">
+            <div class="playground-sandbox" id="playground-sandbox">
+              <div class="skill-bubble bg-gtm" data-category="marketing">Go-To-Market</div>
+              <div class="skill-bubble bg-positioning" data-category="marketing">Positioning</div>
+              <div class="skill-bubble bg-market-res" data-category="marketing">Market Research</div>
+              <div class="skill-bubble bg-sales-en" data-category="marketing">Sales Enablement</div>
+              
+              <div class="skill-bubble bg-pm" data-category="pm">Product Lifecycle</div>
+              <div class="skill-bubble bg-userstories" data-category="pm">User Stories/PRDs</div>
+              <div class="skill-bubble bg-user-res" data-category="pm">User Research</div>
+              <div class="skill-bubble bg-agile" data-category="pm">Agile/Scrum</div>
+              
+              <div class="skill-bubble bg-ai" data-category="tech">AI/LLMs</div>
+              <div class="skill-bubble bg-python" data-category="tech">Python</div>
+              <div class="skill-bubble bg-sql" data-category="tech">SQL</div>
+              <div class="skill-bubble bg-salesforce" data-category="tech">Salesforce</div>
+              <div class="skill-bubble bg-data" data-category="tech">Tableau &amp; BI</div>
+              <div class="skill-bubble bg-integrations" data-category="tech">API Integrations</div>
+            </div>
+
+            <div class="playground-legend">
+              <span class="legend-tag legend-marketing" data-filter="marketing">📣 Product Marketing</span>
+              <span class="legend-tag legend-pm" data-filter="pm">💼 Product Management</span>
+              <span class="legend-tag legend-tech" data-filter="tech">💻 Technical &amp; Systems</span>
+              <button class="btn-clear-filter" id="clear-bubbles">Reset Playground</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Slide 6: Contact & FAQ "Office Hours" -->
+      <section class="slide contact-slide" id="slide-contact">
+        <div class="slide-content">
+          <div class="section-header">
+            <span class="section-emoji">☕</span>
+            <h2 class="section-title">Office Hours &amp; Connect</h2>
+          </div>
+          
+          <div class="contact-grid">
+            <div class="faq-container">
+              <h3>Office Hours FAQs</h3>
+              <div class="faq-accordion">
+                <div class="faq-item active">
+                  <button class="faq-question">What is your design/PM philosophy? <span class="faq-toggle">−</span></button>
+                  <div class="faq-answer" style="display: block;">
+                    I believe products must solve real friction. Doing 1,000+ customer discovery interviews taught me that users don't care about technology alone; they care about how it saves their time, energy, and costs.
+                  </div>
+                </div>
+                
+                <div class="faq-item">
+                  <button class="faq-question">What AI stack do you build with? <span class="faq-toggle">+</span></button>
+                  <div class="faq-answer">
+                    I write Python, construct weighting models for agent evaluation, use LLM APIs (OpenAI, Gemini), and integrate automation layers like Salesforce workflows and custom API endpoints.
+                  </div>
+                </div>
+
+                <div class="faq-item">
+                  <button class="faq-question">What are you reading / learning currently? <span class="faq-toggle">+</span></button>
+                  <div class="faq-answer">
+                    Right now at Dartmouth, I am deep-diving into applications of Natural Language Processing (NLP) in enterprise business systems and cross-border GTM frameworks.
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="connect-container">
+              <h3>Let's Chat!</h3>
+              <p>Looking for a creative Product Marketing Manager or AI Product Builder? Let's connect!</p>
+              
+              <div class="contact-links">
+                <a href="mailto:shriya.v.desai.th@dartmouth.edu" class="contact-link-card mail-card">
+                  <span class="contact-icon">📧</span>
+                  <span class="contact-text">shriya.v.desai.th@dartmouth.edu</span>
+                </a>
+                
+                <a href="https://linkedin.com" target="_blank" class="contact-link-card linkedin-card">
+                  <span class="contact-icon">🔗</span>
+                  <span class="contact-text">LinkedIn Profile</span>
+                </a>
+
+                <div class="contact-link-card phone-card">
+                  <span class="contact-icon">📞</span>
+                  <span class="contact-text">(603) 322-0449</span>
+                </div>
+                
+                <div class="contact-link-card loc-card">
+                  <span class="contact-icon">📍</span>
+                  <span class="contact-text">Hanover, NH / Boston, MA</span>
+                </div>
+              </div>
+              
+              <div class="footer-note">
+                <p>Designed with joy and playfulness. Built using HTML, CSS, and JS.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- Navigation Timeline & Scroll Indicator -->
+  <footer class="app-timeline">
+    <button class="nav-arrow prev" id="slide-prev" aria-label="Previous Slide">←</button>
+    <div class="timeline-track" id="timeline-track">
+      <div class="timeline-progress" id="timeline-progress"></div>
+      <div class="timeline-node active" data-index="0" title="Welcome"></div>
+      <div class="timeline-node" data-index="1" title="About"></div>
+      <div class="timeline-node" data-index="2" title="Experience"></div>
+      <div class="timeline-node" data-index="3" title="Projects"></div>
+      <div class="timeline-node" data-index="4" title="Playground"></div>
+      <div class="timeline-node" data-index="5" title="Contact"></div>
+    </div>
+    <button class="nav-arrow next" id="slide-next" aria-label="Next Slide">→</button>
+  </footer>
+
+  <!-- MODALS FOR CASE STUDIES & ROLES -->
+  
+  <!-- Experience Modal -->
+  <div class="modal-backdrop" id="exp-modal">
+    <div class="modal-box">
+      <button class="modal-close" onclick="closeModals()">&times;</button>
+      <div class="modal-body" id="exp-modal-content">
+        <!-- Filled dynamically by JavaScript -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Project Modal -->
+  <div class="modal-backdrop" id="project-modal">
+    <div class="modal-box">
+      <button class="modal-close" onclick="closeModals()">&times;</button>
+      <div class="modal-body" id="project-modal-content">
+        <!-- Filled dynamically by JavaScript -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Print View Container (Hidden on Screen, visible only for @media print) -->
+  <div class="print-only-resume">
+    <div class="print-header">
+      <h1>SHRIYA V DESAI</h1>
+      <p>Boston, MA | (603) 322-0449 | shriya.v.desai.th@dartmouth.edu | LinkedIn</p>
+    </div>
+    <div class="print-section">
+      <h2>SUMMARY</h2>
+      <p>Product Marketing Manager Intern at Applied Materials with hands-on experience owning the end-to-end lifecycle of AI-driven products, from market research and positioning through go-to-market launch and iteration. Conducted 1,000+ customer discovery interviews and competitive analyses to validate product-market fit and shape positioning and product vision. Skilled at defining product requirements, prioritizing backlogs, enabling sales, and aligning cross-functional teams to deliver impactful launches.</p>
+    </div>
+    <div class="print-section">
+      <h2>EDUCATION</h2>
+      <div class="print-item">
+        <strong>Dartmouth College</strong> <span class="print-date">Sep 2025 – Dec 2026</span><br>
+        <em>Master of Engineering Management, Product Management Track</em> | Hanover, NH
+        <ul>
+          <li>Coursework: Data Analytics, Marketing, Business Applications of NLP, Strategy in Emerging Markets, Accounting & Finance</li>
+          <li>Teaching Assistant: Technical Project Management; Design & Entrepreneurship</li>
+        </ul>
+      </div>
+      <div class="print-item">
+        <strong>PES University</strong> <span class="print-date">Dec 2020 – Aug 2024</span><br>
+        <em>B.Tech, Electrical & Electronics Engineering</em> | Bangalore, India
+        <ul>
+          <li>Coursework: Machine Learning, Soft Computing Techniques, Engineering Management, Entrepreneurship</li>
+          <li>Teaching Assistant: Center for Innovation and Entrepreneurship</li>
+        </ul>
+      </div>
+    </div>
+    <div class="print-section">
+      <h2>EXPERIENCE</h2>
+      <div class="print-item">
+        <strong>Applied Materials</strong> | <em>Product Marketing Manager Intern, VSE Business Unit</em> <span class="print-date">Gloucester, MA · Jun 2026 – Present</span>
+        <ul>
+          <li>Own the go-to-market strategy and cross-functional rollout of Smart NSO (NSO 360) as the focal point across the California and Massachusetts teams</li>
+          <li>Unified opportunity intelligence from 3+ disparate systems (Excel, SAP CRM, Agile tooling) into a single source of truth for the VSE ion-implant sales organization</li>
+          <li>Built the platform's automation and data-aggregation layer into a sales-enablement engine that surfaces qualified upgrade leads and accelerates install-base upsell</li>
+        </ul>
+      </div>
+      <div class="print-item">
+        <strong>Deloitte USI Consulting</strong> | <em>Analyst, Customer & Marketing</em> <span class="print-date">Bengaluru, India · Sep 2024 – Aug 2025</span>
+        <ul>
+          <li>Delivered concurrent workstreams across engineering, data, and business teams to execute roadmap initiatives for an $800M healthcare client across 40+ Jira epics</li>
+          <li>Owned Salesforce pipeline hygiene across 150+ work items, analyzing product metrics to improve delivery forecasting, dependency tracking, and release-readiness visibility</li>
+          <li>Drove post-launch analysis contributing to a 20% reduction in post-release defects; awarded a SPOT Award for process improvements that cut onboarding delays by 50%</li>
+        </ul>
+      </div>
+      <div class="print-item">
+        <strong>Stride AI</strong> | <em>Product Manager & Co-Founder</em> <span class="print-date">Bengaluru, India · Jan 2023 – Dec 2023</span>
+        <ul>
+          <li>Co-founded and led product for an AI-powered talent intelligence platform from ideation to launch, running 1,000+ discovery interviews to validate product-market fit</li>
+          <li>Built AI/NLP matching algorithms (LLMs) for skills-based candidate evaluation; earned Top 30 of 625 teams nationally</li>
+        </ul>
+      </div>
+    </div>
+    <div class="print-section">
+      <h2>PROJECTS</h2>
+      <div class="print-item">
+        <strong>AI Prototyping Lab, SAP Experience Garage (AI Product Manager)</strong>
+        <ul>
+          <li>Led product for a high-fidelity, SAP-native prototype of an idea-evaluation lab for SAP's 50,000-member Experience Garage, designing a six-dimension weighted scoring framework with an LLM evaluation layer and deterministic Python pipeline that auto-scores and routes submitted ideas; benchmarked 24 AI prototyping tools to guide build-vs-buy</li>
+        </ul>
+      </div>
+      <div class="print-item">
+        <strong>AI-Powered Medical Education Platform (EMRLD)</strong>
+        <ul>
+          <li>Led product strategy through PRDs, user stories, and positioning frameworks, and ran a weighted cost-capability vendor evaluation that reduced projected development costs by 66–72%</li>
+        </ul>
+      </div>
+      <div class="print-item">
+        <strong>SyllaBit, Personalized Learning Tool</strong>
+        <ul>
+          <li>Built an AI-driven learning tool for students with ADHD and others who need specialized learning support, designed around a syllabus-to-action North Star Metric; won 1st place at the Johns Hopkins Product Management Hackathon</li>
+        </ul>
+      </div>
+    </div>
+    <div class="print-section">
+      <h2>SKILLS & TOOLS</h2>
+      <ul>
+        <li><strong>Product Marketing:</strong> Go-to-market (GTM) strategy, product positioning & messaging, value propositions, competitive analysis, market research, customer segmentation, sales enablement, product launch, pricing strategy</li>
+        <li><strong>Product Management:</strong> End-to-end product lifecycle, roadmaps, PRDs, user stories, backlog prioritization, user research, usability testing, agile/Scrum, stakeholder alignment</li>
+        <li><strong>Technical & Leadership:</strong> AI/NLP, LLMs, autonomous agents, Python, SQL, Jira, Confluence, Salesforce, Tableau, Power BI, API integrations, MCP servers; cross-functional leadership, executive communication, data-driven decisions</li>
+      </ul>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
