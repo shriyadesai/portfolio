@@ -249,14 +249,20 @@ body.night-mode .toggle-icon {
   justify-content: center;
   padding: 100px 80px 130px 80px; /* Safe padding for header and footer */
   box-sizing: border-box;
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: auto; /* Enable vertical scroll if content overflows */
+  scrollbar-width: none;
   position: relative;
+}
+
+.slide::-webkit-scrollbar {
+  display: none !important;
 }
 
 .slide-content {
   width: 100%;
   max-width: 1200px;
-  height: 100%;
+  min-height: 100%; /* Grow naturally if content overflows */
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -385,15 +391,6 @@ body.night-mode .toggle-icon {
 }
 
 /* Hero Graphic elements */
-.hero-graphic-container {
-  flex: 0.8;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: relative;
-  height: 100%;
-}
-
 .hero-illustration {
   width: 320px;
   height: 320px;
