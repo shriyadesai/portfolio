@@ -74,7 +74,8 @@ const timelineProgress = document.getElementById('timeline-progress');
 
 let currentSlideIndex = 0;
 
-let wheelLock = false;
+let snapping = false;
+let snapIdle = null;
 scrollContainer.addEventListener('wheel', (e) => {
   if (window.matchMedia('(max-width: 820px)').matches) return; // phones use native vertical scroll
 
@@ -88,11 +89,18 @@ scrollContainer.addEventListener('wheel', (e) => {
   if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) return; // let trackpad side-swipes pass through
 
   e.preventDefault();
-  if (wheelLock) return;
-  if (e.deltaY > 6 && currentSlideIndex < slides.length - 1) {
-    wheelLock = true; scrollToSlideIndex(currentSlideIndex + 1); setTimeout(() => { wheelLock = false; }, 750);
-  } else if (e.deltaY < -6 && currentSlideIndex > 0) {
-    wheelLock = true; scrollToSlideIndex(currentSlideIndex - 1); setTimeout(() => { wheelLock = false; }, 750);
+
+  // Re-arm only after the gesture (and its trackpad momentum) has fully stopped.
+  clearTimeout(snapIdle);
+  snapIdle = setTimeout(() => { snapping = false; }, 180);
+
+  if (snapping) return;                 // one section per gesture
+  if (Math.abs(e.deltaY) < 8) return;   // ignore tiny noise
+
+  if (e.deltaY > 0 && currentSlideIndex < slides.length - 1) {
+    snapping = true; scrollToSlideIndex(currentSlideIndex + 1);
+  } else if (e.deltaY < 0 && currentSlideIndex > 0) {
+    snapping = true; scrollToSlideIndex(currentSlideIndex - 1);
   }
 }, { passive: false });
 
