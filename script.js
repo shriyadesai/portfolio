@@ -465,86 +465,81 @@ function initPhysics() {
       const bubbleRect = el.getBoundingClientRect();
       dragOffsetX = e.clientX - bubbleRect.left;
       dragOffsetY = e.clientY - bubbleRect.top;
+      el.style.zIndex = '50';
     });
   });
 }
 
+function clamp(v, lo, hi) { return Math.max(lo, Math.min(hi, v)); }
+
+// AABB collision: stable for wide pill-shaped bubbles (no circle clumping)
+function resolveCollision(b1, b2) {
+  const overlapX = Math.min(b1.x + b1.width,  b2.x + b2.width)  - Math.max(b1.x, b2.x);
+  const overlapY = Math.min(b1.y + b1.height, b2.y + b2.height) - Math.max(b1.y, b2.y);
+  if (overlapX <= 0 || overlapY <= 0) return;
+
+  const m1 = b1.isDragged ? 0 : 1;   // a dragged bubble is immovable
+  const m2 = b2.isDragged ? 0 : 1;
+  const total = (m1 + m2) || 1;
+
+  if (overlapX < overlapY) {
+    const dir = (b1.x + b1.width / 2) < (b2.x + b2.width / 2) ? -1 : 1;
+    b1.x += dir * overlapX * (m1 / total);
+    b2.x -= dir * overlapX * (m2 / total);
+    if (m1 && m2) { const t = b1.vx; b1.vx = b2.vx * 0.7; b2.vx = t * 0.7; }
+    else if (m1)  { b1.vx = -b1.vx * 0.6 + dir * 0.25; }
+    else if (m2)  { b2.vx = -b2.vx * 0.6 - dir * 0.25; }
+  } else {
+    const dir = (b1.y + b1.height / 2) < (b2.y + b2.height / 2) ? -1 : 1;
+    b1.y += dir * overlapY * (m1 / total);
+    b2.y -= dir * overlapY * (m2 / total);
+    if (m1 && m2) { const t = b1.vy; b1.vy = b2.vy * 0.7; b2.vy = t * 0.7; }
+    else if (m1)  { b1.vy = -b1.vy * 0.6 + dir * 0.25; }
+    else if (m2)  { b2.vy = -b2.vy * 0.6 - dir * 0.25; }
+  }
+}
+
 function updatePhysics() {
   const rect = sandbox.getBoundingClientRect();
-  const w = rect.width > 200 ? rect.width : 900;
+  const w = rect.width  > 200 ? rect.width  : 900;
   const h = rect.height > 100 ? rect.height : 340;
 
+  // 1. Dragged bubble follows the pointer + records a throw velocity
   if (activeDragBubble && activeDragBubble.isDragged) {
-    const sandboxRect = sandbox.getBoundingClientRect();
-    const prevX = activeDragBubble.x;
-    const prevY = activeDragBubble.y;
-    
-    activeDragBubble.x = mouseX - sandboxRect.left - dragOffsetX;
-    activeDragBubble.y = mouseY - sandboxRect.top - dragOffsetY;
-    
-    activeDragBubble.x = Math.max(0, Math.min(w - activeDragBubble.width, activeDragBubble.x));
-    activeDragBubble.y = Math.max(0, Math.min(h - activeDragBubble.height, activeDragBubble.y));
-    
-    activeDragBubble.vx = (activeDragBubble.x - prevX) * 0.6;
-    activeDragBubble.vy = (activeDragBubble.y - prevY) * 0.6;
+    const sb = sandbox.getBoundingClientRect();
+    const prevX = activeDragBubble.x, prevY = activeDragBubble.y;
+    activeDragBubble.x = clamp(mouseX - sb.left - dragOffsetX, 0, w - activeDragBubble.width);
+    activeDragBubble.y = clamp(mouseY - sb.top  - dragOffsetY, 0, h - activeDragBubble.height);
+    activeDragBubble.vx = (activeDragBubble.x - prevX) * 0.5;
+    activeDragBubble.vy = (activeDragBubble.y - prevY) * 0.5;
   }
 
-  for (let i = 0; i < bubbleData.length; i++) {
-    const b1 = bubbleData[i];
-    if (b1.isDragged) continue;
+  // 2. Resolve every pair once
+  for (let i = 0; i < bubbleData.length; i++)
+    for (let j = i + 1; j < bubbleData.length; j++)
+      resolveCollision(bubbleData[i], bubbleData[j]);
 
-    if (b1.x <= 0) { b1.x = 0; b1.vx = Math.abs(b1.vx); }
-    else if (b1.x + b1.width >= w) { b1.x = w - b1.width; b1.vx = -Math.abs(b1.vx); }
+  // 3. Integrate everything that isn't being dragged
+  for (const b of bubbleData) {
+    if (b.isDragged) continue;
 
-    if (b1.y <= 0) { b1.y = 0; b1.vy = Math.abs(b1.vy); }
-    else if (b1.y + b1.height >= h) { b1.y = h - b1.height; b1.vy = -Math.abs(b1.vy); }
+    if (b.x <= 0) { b.x = 0; b.vx = Math.abs(b.vx); }
+    else if (b.x + b.width >= w) { b.x = w - b.width; b.vx = -Math.abs(b.vx); }
+    if (b.y <= 0) { b.y = 0; b.vy = Math.abs(b.vy); }
+    else if (b.y + b.height >= h) { b.y = h - b.height; b.vy = -Math.abs(b.vy); }
 
-    for (let j = i + 1; j < bubbleData.length; j++) {
-      const b2 = bubbleData[j];
-      
-      const c1x = b1.x + b1.width / 2;
-      const c1y = b1.y + b1.height / 2;
-      const c2x = b2.x + b2.width / 2;
-      const c2y = b2.y + b2.height / 2;
-      
-      const dx = c2x - c1x;
-      const dy = c2y - c1y;
-      const dist = Math.sqrt(dx * dx + dy * dy);
-      const minDist = b1.radius + b2.radius;
-      
-      if (dist < minDist && dist > 0) {
-        const overlap = minDist - dist;
-        const nx = dx / dist;
-        const ny = dy / dist;
-        
-        if (!b1.isDragged) { b1.x -= nx * overlap * 0.5; b1.y -= ny * overlap * 0.5; }
-        if (!b2.isDragged) { b2.x += nx * overlap * 0.5; b2.y += ny * overlap * 0.5; }
-        
-        const kx = b1.vx - b2.vx;
-        const ky = b1.vy - b2.vy;
-        const p = 2 * (nx * kx + ny * ky) / 2;
-        
-        if (!b1.isDragged) { b1.vx -= p * nx; b1.vy -= p * ny; }
-        if (!b2.isDragged) { b2.vx += p * nx; b2.vy += p * ny; }
-      }
-    }
+    b.vx += (Math.random() - 0.5) * floatDrift;
+    b.vy += (Math.random() - 0.5) * floatDrift;
+    b.vx *= friction;  b.vy *= friction;
+    b.vx = clamp(b.vx, -speedLimit, speedLimit);
+    b.vy = clamp(b.vy, -speedLimit, speedLimit);
 
-    b1.vx += (Math.random() - 0.5) * floatDrift;
-    b1.vy += (Math.random() - 0.5) * floatDrift;
-    
-    b1.vx *= friction;
-    b1.vy *= friction;
-    
-    b1.vx = Math.max(-speedLimit, Math.min(speedLimit, b1.vx));
-    b1.vy = Math.max(-speedLimit, Math.min(speedLimit, b1.vy));
-    
-    b1.x += b1.vx;
-    b1.y += b1.vy;
+    b.x = clamp(b.x + b.vx, 0, w - b.width);
+    b.y = clamp(b.y + b.vy, 0, h - b.height);
   }
 
-  bubbleData.forEach(b => {
-    b.el.style.transform = `translate(${b.x}px, ${b.y}px)`;
-  });
+  // 4. Paint
+  for (const b of bubbleData) b.el.style.transform = `translate(${b.x}px, ${b.y}px)`;
 
   requestAnimationFrame(updatePhysics);
 }
@@ -552,6 +547,7 @@ function updatePhysics() {
 window.addEventListener('mouseup', () => {
   if (activeDragBubble) {
     activeDragBubble.isDragged = false;
+    activeDragBubble.el.style.zIndex = '';
     activeDragBubble = null;
   }
 });
