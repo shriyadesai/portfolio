@@ -74,22 +74,26 @@ const timelineProgress = document.getElementById('timeline-progress');
 
 let currentSlideIndex = 0;
 
+let wheelLock = false;
 scrollContainer.addEventListener('wheel', (e) => {
+  if (window.matchMedia('(max-width: 820px)').matches) return; // phones use native vertical scroll
+
   const activeSlide = slides[currentSlideIndex];
-  if (activeSlide) {
-    const hasVerticalOverflow = activeSlide.scrollHeight > activeSlide.clientHeight;
-    
-    if (hasVerticalOverflow) {
-      const isScrollEnd = activeSlide.scrollTop + activeSlide.clientHeight >= activeSlide.scrollHeight - 8;
-      const isScrollTop = activeSlide.scrollTop <= 5;
-      
-      if (e.deltaY > 0 && !isScrollEnd) return;
-      if (e.deltaY < 0 && !isScrollTop) return;
-    }
+  if (activeSlide && activeSlide.scrollHeight > activeSlide.clientHeight + 4) {
+    const atEnd = activeSlide.scrollTop + activeSlide.clientHeight >= activeSlide.scrollHeight - 4;
+    const atTop = activeSlide.scrollTop <= 4;
+    if ((e.deltaY > 0 && !atEnd) || (e.deltaY < 0 && !atTop)) return; // scroll inside the slide first
   }
 
+  if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) return; // let trackpad side-swipes pass through
+
   e.preventDefault();
-  scrollContainer.scrollLeft += (e.deltaY + e.deltaX) * 0.85;
+  if (wheelLock) return;
+  if (e.deltaY > 6 && currentSlideIndex < slides.length - 1) {
+    wheelLock = true; scrollToSlideIndex(currentSlideIndex + 1); setTimeout(() => { wheelLock = false; }, 750);
+  } else if (e.deltaY < -6 && currentSlideIndex > 0) {
+    wheelLock = true; scrollToSlideIndex(currentSlideIndex - 1); setTimeout(() => { wheelLock = false; }, 750);
+  }
 }, { passive: false });
 
 scrollContainer.addEventListener('scroll', () => {
@@ -135,11 +139,13 @@ document.getElementById('slide-next').addEventListener('click', () => {
 });
 
 function scrollToSlideIndex(index) {
-  const slideWidth = window.innerWidth;
-  scrollContainer.scrollTo({
-    left: index * slideWidth,
-    behavior: 'smooth'
-  });
+  index = Math.max(0, Math.min(slides.length - 1, index));
+  const target = slides[index];
+  if (window.matchMedia('(max-width: 820px)').matches) {
+    target.scrollIntoView({ behavior: 'smooth' });
+  } else {
+    scrollContainer.scrollTo({ left: index * window.innerWidth, behavior: 'smooth' });
+  }
   currentSlideIndex = index;
   updateTimelineUI(index);
 }
@@ -339,6 +345,14 @@ const projectData = {
       "Built an AI-driven learning tool for students with ADHD and others who need specialized learning support.",
       "Designed around a syllabus-to-action North Star Metric.",
       "Won 1st place at the Johns Hopkins Product Management Hackathon."
+    ]
+  },
+  pawsible: {
+    title: "Pawsible",
+    subtitle: "AI-Driven Adoption Platform",
+    bullets: [
+      "Defined end-to-end user journeys and AI-powered matching flows across adopter, shelter, and volunteer personas.",
+      "Created wireframes and user stories across personas to guide development."
     ]
   }
 };
