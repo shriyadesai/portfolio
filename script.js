@@ -186,8 +186,7 @@ const typewriterSpan = document.getElementById('typewriter-text');
 const phrases = [
   "a Product Marketing Manager 📣",
   "an AI Product Builder 🤖",
-  "a Dartmouth MEM Student 🎒",
-  "a Stride AI Co-Founder 🚀"
+  "a Dartmouth MEM Student 🎒"
 ];
 
 let phraseIndex = 0;
