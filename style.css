@@ -825,7 +825,7 @@ body.night-mode .toggle-icon {
 }
 
 .skill-bubble:active {
-  transform: scale(0.95);
+  filter: brightness(0.96);
 }
 
 .skill-bubble[data-category="marketing"] {
@@ -849,13 +849,11 @@ body.night-mode .toggle-icon {
 .skill-bubble.dimmed {
   opacity: 0.25;
   filter: blur(1.5px);
-  transform: scale(0.85);
 }
 
 .skill-bubble.highlighted {
   border: 3px solid var(--accent-primary) !important;
   box-shadow: 0 12px 30px rgba(var(--accent-rgb), 0.4) !important;
-  transform: scale(1.15) !important;
   z-index: 100;
 }
 
